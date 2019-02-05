@@ -106,6 +106,40 @@ router.get('/:director_id', (req, res) => {
     });
 });
 
+
+// ID içerik güncelleme
+router.put('/:director_id', (req, res, next) => {
+    // res.send(req.params);
+    const promise = Director.findByIdAndUpdate(
+      req.params.director_id, 
+      req.body,
+      {
+        new: true
+      }
+  );
+    promise.then((director) => {
+      if(!director)
+        next({message: 'Böyle bir yönetmen yok.', code: 99}); // Hata mesajı vermek.
+      res.json(director);
+    }).catch((err) => {
+      res.json(err);
+    });
+  });
+
+
+  // ID ile silme işlemi
+router.delete('/:director_id', (req, res, next) => {
+    // res.send(req.params);
+    const promise = Director.findByIdAndRemove(req.params.director_id);
+    promise.then((director) => {
+      if(!director)
+        next({message: 'Böyle bir yönetmen yok.', code: 99}); // Hata mesajı vermek.
+      res.json({status: 1});
+    }).catch((err) => {
+      res.json(err);
+    });
+  });
+
 router.post('/', (req, res, next) => {
     const director = new Director(req.body);
     const promise = director.save();

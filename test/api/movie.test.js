@@ -63,7 +63,7 @@ describe('/POST movie', () => {
 });
 
 // GET directör id movie
-describe('/GET/:director_id movies', () => {
+describe('/GET/:movie_id movies', () => {
     it('it should be get movie by director id', (done) => {
         chai.request(server)
         .get('/api/movies/'+ movieId)
@@ -79,6 +79,52 @@ describe('/GET/:director_id movies', () => {
             res.body.should.have.property('_id').eql(movieId);
             done();
         });
+    });
+});
+
+// PUT director id
+describe('/PUT Director id', () => {
+    it('it should UPDATE a movie given by id', (done) => {
+        const movie = {
+            title           : '93Creative',
+            director_id     : '5c19a70f39bb2b37a45dcabb',
+            category        : 'Suç',
+            country         : 'Fransa',
+            year            : 1970,
+            imdb_score      : 9
+        };
+        chai.request(server)
+            .put('/api/movies/'+ movieId)
+            .send(movie)
+            .set('x-access-token', token)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('title').eql(movie.title);
+                res.body.should.have.property('director_id').eql(movie.director_id);
+                res.body.should.have.property('category').eql(movie.category);
+                res.body.should.have.property('country').eql(movie.country);
+                res.body.should.have.property('year').eql(movie.year);
+                res.body.should.have.property('imdb_score').eql(movie.imdb_score);
+                
+                done();
+            });
+    });
+});
+
+
+// DELETE MOVIE
+describe('/DELETE Movie', () => {
+    it('it should delete movie', (done) => {
+        chai.request(server)
+            .delete('/api/movies/'+ movieId)
+            .set('x-access-token', token)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').eql(1);
+                done();
+            });
     });
 });
 

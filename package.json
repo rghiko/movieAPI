@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "mocha --exit --recursive",
-    "start": "nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "start:dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "balanced-match": "^1.0.0",
